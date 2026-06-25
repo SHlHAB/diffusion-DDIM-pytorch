@@ -59,7 +59,7 @@ Callback:
 # "cuda" targets the Newton H100; get_device() auto-falls back to mps/cpu
 # (e.g. on a local Mac), so this same config runs in both places.
 device: "cuda"
-epochs: 20
+epochs: 50
 # Whether to continue training, True or False
 consume: False
 # If continue training, which checkpoint to load

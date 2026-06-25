@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --gres=gpu:nvidia_h100_80gb_hbm3:1
-#SBATCH --time=02:00:00          # 20 epochs of MNIST on an H100 is minutes; verify cap: sinfo -p highgpu -o "%l"
+#SBATCH --time=24:00:00          # generous cap for 50 epochs; verify partition max: sinfo -p highgpu -o "%l"
 
 # Train the DDIM UNet on MNIST. Config lives in config.yml (device: cuda).
 # Submit from the repo root:  sbatch slurm/train.sbatch

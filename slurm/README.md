@@ -29,7 +29,7 @@ line and the `LD_LIBRARY_PATH` path) for one you already have.
 sbatch slurm/train.sbatch
 ```
 
-- Reads `config.yml` (`device: cuda`, 20 epochs, batch 128). MNIST auto-downloads
+- Reads `config.yml` (`device: cuda`, 50 epochs, batch 128). MNIST auto-downloads
   to `data/` on first run.
 - Checkpoints save to `checkpoint/mnist.pth` every epoch, so you can resume:
   set `consume: True` in `config.yml` and resubmit.
