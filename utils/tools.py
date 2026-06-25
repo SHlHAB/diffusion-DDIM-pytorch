@@ -3,7 +3,7 @@ import torch
 from tqdm import tqdm
 from torchvision.utils import make_grid
 from PIL import Image
-from pathlib2 import Path
+from pathlib import Path
 import yaml
 
 
@@ -13,6 +13,47 @@ def load_yaml(yml_path: Union[Path, str], encoding="utf-8"):
     with yml_path.open('r', encoding=encoding) as f:
         cfg = yaml.load(f.read(), Loader=yaml.SafeLoader)
         return cfg
+
+
+def get_device(preferred: str = "auto") -> torch.device:
+    """
+    Resolve a torch device, gracefully falling back when the preferred one is
+    unavailable. This lets the same config run on the UCF Newton cluster (CUDA
+    H100) and on a local Mac (Apple MPS) without edits.
+
+    `preferred` may be "auto", "cuda", "cuda:N", "mps", or "cpu".
+    """
+    preferred = (preferred or "auto").lower()
+
+    def cuda_ok():
+        return torch.cuda.is_available()
+
+    def mps_ok():
+        return getattr(torch.backends, "mps", None) is not None and torch.backends.mps.is_available()
+
+    if preferred.startswith("cuda"):
+        if cuda_ok():
+            device = torch.device(preferred)
+        elif mps_ok():
+            print(f"[device] '{preferred}' requested but CUDA is unavailable; falling back to mps.")
+            device = torch.device("mps")
+        else:
+            print(f"[device] '{preferred}' requested but CUDA is unavailable; falling back to cpu.")
+            device = torch.device("cpu")
+    elif preferred == "mps":
+        device = torch.device("mps") if mps_ok() else torch.device("cpu")
+    elif preferred == "cpu":
+        device = torch.device("cpu")
+    else:  # auto
+        if cuda_ok():
+            device = torch.device("cuda")
+        elif mps_ok():
+            device = torch.device("mps")
+        else:
+            device = torch.device("cpu")
+
+    print(f"[device] using: {device}")
+    return device
 
 
 def train_one_epoch(trainer, loader, optimizer, device, epoch):

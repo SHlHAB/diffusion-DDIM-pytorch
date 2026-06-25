@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Datasets (downloaded at runtime, see config Dataset.download)
+data/MNIST/
+data/cifar-10-batches-py/
+data/cifar-10-python.tar.gz
+
+# Trained checkpoints (large; produced by training)
+checkpoint/*.pth
+
+# SLURM / training logs
+slurm/logs/
+logs/
+*.log

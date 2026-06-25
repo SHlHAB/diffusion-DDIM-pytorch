@@ -4,6 +4,14 @@ This is a pytorch implementation of DDIM. The original paper is here https://arx
 
 This code is almost identical to DDPM, see here: https://github.com/Alokia/diffusion-DDPM-pytorch
 
+## Running on the UCF Newton cluster
+
+This fork is configured to train on MNIST on Newton's H100 GPUs. See
+[`slurm/README.md`](slurm/README.md) for environment setup and `sbatch` usage.
+In short: `conda activate ddim` then `sbatch slurm/train.sbatch`. The device is
+resolved by `utils.tools.get_device`, so the same `config.yml` (`device: cuda`)
+also runs locally on Apple MPS or CPU.
+
 ## how to use
 
 Almost all the parameters that can be modified are listed in the `config.yml` file. You can modify the relevant parameters as needed, and then run the `train.py` file to start training.

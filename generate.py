@@ -1,14 +1,14 @@
 from utils.engine import DDPMSampler, DDIMSampler
 from model.UNet import UNet
 import torch
-from utils.tools import save_sample_image, save_image
+from utils.tools import save_sample_image, save_image, get_device
 from argparse import ArgumentParser
 
 
 def parse_option():
     parser = ArgumentParser()
     parser.add_argument("-cp", "--checkpoint_path", type=str, required=True)
-    parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--sampler", type=str, default="ddpm", choices=["ddpm", "ddim"])
 
     # generator param
@@ -35,9 +35,9 @@ def parse_option():
 
 @torch.no_grad()
 def generate(args):
-    device = torch.device(args.device)
+    device = get_device(args.device)
 
-    cp = torch.load(args.checkpoint_path)
+    cp = torch.load(args.checkpoint_path, map_location="cpu")
     # load trained model
     model = UNet(**cp["config"]["Model"])
     model.load_state_dict(cp["model"])

@@ -192,7 +192,7 @@ class DDIMSampler(nn.Module):
             a = self.T // steps
             time_steps = np.asarray(list(range(0, self.T, a)))
         elif method == "quadratic":
-            time_steps = (np.linspace(0, np.sqrt(self.T * 0.8), steps) ** 2).astype(np.int)
+            time_steps = (np.linspace(0, np.sqrt(self.T * 0.8), steps) ** 2).astype(int)
         else:
             raise NotImplementedError(f"sampling method {method} is not implemented!")
 

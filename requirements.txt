@@ -1,0 +1,9 @@
+# Core dependencies for diffusion-DDIM-pytorch.
+# On the UCF Newton cluster, install a CUDA-enabled torch build (see slurm/README.md).
+# pathlib2 is intentionally NOT required -- the code uses the stdlib pathlib.
+torch>=2.1
+torchvision>=0.16
+numpy>=1.24
+tqdm>=4.65
+pyyaml>=6.0
+pillow>=9.0

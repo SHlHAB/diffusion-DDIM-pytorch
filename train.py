@@ -1,7 +1,7 @@
 from dataset import create_dataset
 from model.UNet import UNet
 from utils.engine import GaussianDiffusionTrainer
-from utils.tools import train_one_epoch, load_yaml
+from utils.tools import train_one_epoch, load_yaml, get_device
 import torch
 from utils.callbacks import ModelCheckpoint
 
@@ -9,11 +9,11 @@ from utils.callbacks import ModelCheckpoint
 def train(config):
     consume = config["consume"]
     if consume:
-        cp = torch.load(config["consume_path"])
+        cp = torch.load(config["consume_path"], map_location="cpu")
         config = cp["config"]
     print(config)
 
-    device = torch.device(config["device"])
+    device = get_device(config["device"])
     loader = create_dataset(**config["Dataset"])
     start_epoch = 1
 
